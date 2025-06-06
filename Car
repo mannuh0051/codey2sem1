@@ -1,3 +1,5 @@
+//name: emmanuel kipkoech
+//adm:bse-05-0169/2024
 public class Car {
     private String registrationNumber;
     private String model;
