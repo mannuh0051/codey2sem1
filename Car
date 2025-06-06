@@ -1,0 +1,192 @@
+public class Car {
+    private String registrationNumber;
+    private String model;
+    private String brand;
+    private boolean isAvailable;
+
+    public Car(String registrationNumber, String model, String brand) {
+        this.registrationNumber = registrationNumber;
+        this.model = model;
+        this.brand = brand;
+        this.isAvailable = true;
+    }
+
+    public void rentCar() {
+        isAvailable = false;
+    }
+
+    public void returnCar() {
+        isAvailable = true;
+    }
+
+public String getRegistrationNumber() {
+        return registrationNumber;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public boolean isAvailable(){
+return isAvailable;
+    }
+
+    public String toString() {
+        return brand + " " + model + " (" + registrationNumber + ") - " + (isAvailable ? "Available" : "Rented");
+    }
+}
+
+// Customer.java
+public class Customer {
+    private String customerId;
+private String name;
+    private String phoneNumber;
+
+    public Customer(String customerId, String name, String phoneNumber) {
+        this.customerId = customerId;
+        this.name = name;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCustomerId(){
+return customerId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String toString() {
+return name + " (ID: " + customerId +
+", Phone: " + phoneNumber + ")";
+}
+
+}
+
+// RentalTransaction.java
+import java.time.LocalDate;
+
+public class RentalTransaction {
+    private Customer customer;
+    private Car car;
+    private LocalDate rentalDate;
+    private LocalDate returnDate;
+
+    public RentalTransaction(Customer customer, Car car) {
+this.customer = customer;
+        this.car = car;
+        this.rentalDate = LocalDate.now();
+    }
+
+    public void returnCar() {
+        this.returnDate = LocalDate.now();
+        car.returnCar();
+    }
+
+public String toString() {
+        return "Rental: " + customer.getName() + " rented " + car.getModel() + " on " + rentalDate +
+               (returnDate != null ? ", returned on " + returnDate : "");
+    }
+}
+
+// RentalAgency.java
+import java.util.ArrayList;
+import java.util.List;
+
+public class RentalAgency{
+private List<Car> cars = new ArrayList<>();
+    private List<Customer> customers = new ArrayList<>();
+    private List<RentalTransaction> rentals = new ArrayList<>();
+
+    public void addCar(Car car) {
+        cars.add(car);
+    }
+
+    public void addCustomer(Customer customer) {
+        customers.add(customer);
+    }
+
+public boolean rentCar(String customerId, String regNumber) {
+        Customer customer = findCustomer(customerId);
+        Car car = findCar(regNumber);
+
+        if (customer != null && car != null && car.isAvailable()) {
+            car.rentCar();
+rentals.add(new RentalTransaction(customer, car));
+            return true;
+        }
+        return false;
+    }
+
+    private Customer findCustomer(String id) {
+for (Customer c : customers) {
+            if (c.getCustomerId().equals(id)) return c;
+        }
+        return null;
+    }
+
+    private Car findCar(String regNumber){
+for (Car c : cars) {
+            if (c.getRegistrationNumber().equals(regNumber)) return c;
+        }
+        return null;
+    }
+
+
+
+
+public void showCars() {
+    for (Car car : cars) {
+        System.out.println(car);
+    }
+}
+
+public void showCustomers() {
+    for (Customer customer : customers) {
+System.out.println(customer);
+    }
+}
+
+    public void showRentals() {
+        for (RentalTransaction rental : rentals) {
+            System.out.println(rental);
+        }
+    }
+}
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        RentalAgency agency = new RentalAgency();
+
+        // Adding Cars
+        agency.addCar(new Car("KDG123", "Civic", "Honda"));
+        agency.addCar(new Car("KCH456", "Corolla", "Toyota"));
+
+        // Adding Customers
+agency.addCustomer(new Customer("C001", "Alice", "0712345678"));
+        agency.addCustomer(new Customer("C002", "Bob", "0722334455"));
+
+        // Rent a car
+        boolean rented = agency.rentCar("C001", "KDG123");
+        System.out.println("Car rental successful? " + rented);
+
+        System.out.println("Available Cars:");
+agency.showCars();
+
+        System.out.println("All Customers:");
+        agency.showCustomers();
+
+        System.out.println("Rental Transactions:");
+        agency.showRentals();
+    }
+}
+
