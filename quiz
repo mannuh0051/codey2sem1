@@ -1,0 +1,24 @@
+#include <stdio.h>
+
+int main() {
+    int score = 0, answer;
+    printf("Welcome to the Quiz!\n");
+
+    printf("1. What is the capital of Kenya?\n");
+    printf("1. Nairobi  2. Mombasa  3. Kisumu\n");
+    scanf("%d", &answer);
+    if (answer == 1) score++;
+
+    printf("2. 5 + 7 = ?\n");
+    printf("1. 10  2. 12  3. 14\n");
+    scanf("%d", &answer);
+    if (answer == 2) score++;
+
+    printf("3. Which language is this program written in?\n");
+    printf("1. Python  2. C++  3. C\n");
+    scanf("%d", &answer);
+    if (answer == 3) score++;
+
+    printf("You scored %d/3!\n", score);
+    return 0;
+}
