@@ -1,0 +1,47 @@
+//student record system
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Student {
+    int id;
+    char name[50];
+    float grade;
+};
+
+void addStudent(FILE *fp) {
+    struct Student s;
+    printf("Enter ID: "); scanf("%d", &s.id);
+    printf("Enter name: "); scanf(" %[^\n]", s.name);
+    printf("Enter grade: "); scanf("%f", &s.grade);
+    fwrite(&s, sizeof(s), 1, fp);
+}
+
+void displayStudents(FILE *fp) {
+    struct Student s;
+    rewind(fp);
+    printf("\nID\tName\t\tGrade\n");
+    while (fread(&s, sizeof(s), 1, fp)) {
+        printf("%d\t%s\t\t%.2f\n", s.id, s.name, s.grade);
+    }
+}
+
+void searchStudent(FILE *fp) {
+    int id;
+    struct Student s;
+    rewind(fp);
+    printf("Enter student ID to search: "); scanf("%d", &id);
+    while (fread(&s, sizeof(s), 1, fp)) {
+        if (s.id == id) {
+            printf("Found: %s with Grade %.2f\n", s.name, s.grade);
+            return;
+        }
+    }
+    printf("Student not found.\n");
+}
+
+int main() {
+    FILE *fp = fopen("students.dat", "ab+");
+    int choice;
+    do {
+        printf("\n1. Add Student\n2. View All\n
