@@ -1,0 +1,101 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class RadioButtonDemo extends JFrame implements ActionListener {
+    private JRadioButton birdButton, catButton, dogButton, rabbitButton, pigButton;
+    private JLabel imageLabel, nameLabel;
+    private ButtonGroup group;
+
+    public RadioButtonDemo() {
+        setTitle("Radio Button Demo");
+        setSize(500, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+
+        // Left panel with radio buttons
+        JPanel radioPanel = new JPanel();
+        radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.Y_AXIS));
+
+        birdButton = new JRadioButton("Bird");
+        catButton = new JRadioButton("Cat");
+        dogButton = new JRadioButton("Dog");
+        rabbitButton = new JRadioButton("Rabbit");
+        pigButton = new JRadioButton("Pig");
+
+        group = new ButtonGroup();
+        group.add(birdButton);
+        group.add(catButton);
+        group.add(dogButton);
+        group.add(rabbitButton);
+        group.add(pigButton);
+
+        birdButton.addActionListener(this);
+        catButton.addActionListener(this);
+        dogButton.addActionListener(this);
+        rabbitButton.addActionListener(this);
+        pigButton.addActionListener(this);
+
+        radioPanel.add(birdButton);
+        radioPanel.add(catButton);
+        radioPanel.add(dogButton);
+        radioPanel.add(rabbitButton);
+        radioPanel.add(pigButton);
+
+        add(radioPanel, BorderLayout.WEST);
+
+        // Right panel with image and name
+        JPanel displayPanel = new JPanel(new BorderLayout());
+        imageLabel = new JLabel();
+        imageLabel.setHorizontalAlignment(JLabel.CENTER);
+        nameLabel = new JLabel("Select an animal", JLabel.CENTER);
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
+
+        displayPanel.add(imageLabel, BorderLayout.CENTER);
+        displayPanel.add(nameLabel, BorderLayout.SOUTH);
+
+        add(displayPanel, BorderLayout.CENTER);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        String animal = "";
+        String imagePath = "";
+
+        if (e.getSource() == birdButton) {
+            animal = "Bird";
+            imagePath = "bird.jpg";
+        } else if (e.getSource() == catButton) {
+            animal = "Cat";
+            imagePath = "cat.jpg";
+        } else if (e.getSource() == dogButton) {
+            animal = "Dog";
+            imagePath = "dog.jpg";
+        } else if (e.getSource() == rabbitButton) {
+            animal = "Rabbit";
+            imagePath = "rabbit.jpg";
+        } else if (e.getSource() == pigButton) {
+            animal = "Pig";
+            imagePath = "IMG-20250703-WA0003.jpg";  // Your pig image
+        }
+
+        nameLabel.setText(animal);
+
+        // Load and resize image
+        ImageIcon icon = new ImageIcon(imagePath);
+        if (icon.getIconWidth() > 0) {
+            Image img = icon.getImage().getScaledInstance(200, 150, Image.SCALE_SMOOTH);
+            imageLabel.setIcon(new ImageIcon(img));
+        } else {
+            imageLabel.setIcon(null);
+            nameLabel.setText(animal + " (Image not found)");
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            RadioButtonDemo frame = new RadioButtonDemo();
+            frame.setVisible(true);
+        });
+    }
+}
